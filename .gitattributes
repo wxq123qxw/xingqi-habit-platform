@@ -1,0 +1,138 @@
+# ============================================================
+# Git 属性配置（Module 09 打包）
+# ============================================================
+# 用途：
+#   1. 自动检测文本文件的换行符（CRLF / LF）
+#   2. 标记二进制文件，避免 git 误处理（diff/merge 损坏）
+#   3. 告诉 GitHub 文件大小写敏感度
+# ============================================================
+
+# 自动检测文本文件,处理 CRLF/LF
+* text=auto whitespace=-trailing-space,-space-before-tab,tab-in-indent,cr-at-eol
+
+# ============================================================
+# 二进制文件 (git 不应尝试 diff/merge)
+# ============================================================
+
+# 图片
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.bmp binary
+*.ico binary
+*.icns binary
+*.svgz
+
+# 视频 / 音频
+*.mp4 binary
+*.webm binary
+*.mov binary
+*.avi binary
+*.mkv binary
+*.mp3 binary
+*.wav binary
+*.ogg binary
+*.flac binary
+
+# 字体
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.eot
+
+# 压缩包
+*.zip binary
+*.gz binary
+*.tar binary
+*.7z binary
+*.rar binary
+*.hbf binary
+
+# 二进制可执行 / 库
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.bin binary
+
+# Office / PDF
+*.pdf binary
+*.docx binary
+*.xlsx binary
+*.pptx binary
+
+# 图标字体
+*.ttc binary
+
+# 锁文件
+*.lock binary
+
+# ============================================================
+# 已知文本文件,统一 LF (跨平台开发友好)
+# ============================================================
+
+# Shell 脚本
+*.sh text eol=lf
+*.bash text eol=lf
+
+# PowerShell
+*.ps1 text eol=crlf
+*.psm1 text eol=crlf
+
+# Python
+*.py text eol=lf
+
+# JavaScript / TypeScript / CSS / JSON / YAML / Markdown
+*.js text eol=lf
+*.jsx text eol=lf
+*.cjs text eol=lf
+*.mjs text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.sass text eol=lf
+*.less text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+*.mdx text eol=lf
+
+# HTML / XML / SVG
+*.html text eol=lf
+*.htm text eol=lf
+*.xml text eol=lf
+*.svg text
+
+# 构建配置
+*.gradle text eol=lf
+Makefile text eol=lf
+Dockerfile text eol=lf
+
+# 配置文件
+*.gitignore text eol=lf
+.gitattributes text eol=lf
+.editorconfig text eol=lf
+
+# ============================================================
+# 文档
+# ============================================================
+
+# Windows 批处理
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# ============================================================
+# Git LFS (可选,大文件追踪)
+# 如需启用 LFS,把下面注释去掉并安装 git-lfs
+# ============================================================
+
+# *.psd filter=lfs diff=lfs merge=lfs -text
+# *.ai filter=lfs diff=lfs merge=lfs -text
+# *.sketch filter=lfs diff=lfs merge=lfs -text
+# *.mp4 filter=lfs diff=lfs merge=lfs -text
+# *.zip filter=lfs diff=lfs merge=lfs -text
