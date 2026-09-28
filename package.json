@@ -2,6 +2,7 @@
   "name": "habit-platform",
   "private": true,
   "version": "0.0.0",
+  "license": "MIT",
   "description": "星启 · 习惯打卡 + 排行榜 + 好友",
   "author": {
     "name": "habit-platform team",
