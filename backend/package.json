@@ -1,0 +1,17 @@
+{
+  "name": "habit-platform-backend",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Habit platform backend (Express + node:sqlite + scheduled encrypted backup)",
+  "main": "src/server.cjs",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-sqlite --no-warnings src/server.cjs",
+    "dev": "node --experimental-sqlite --no-warnings --watch src/server.cjs",
+    "test:api": "node --experimental-sqlite --no-warnings test/curl-api.mjs"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0"
+  }
+}

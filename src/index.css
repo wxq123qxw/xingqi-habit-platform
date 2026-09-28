@@ -1,0 +1,432 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Module 09 (2026-09-26): Electron 自定义紫色 title bar (36px) 布局 */
+  /* Title bar 直接放在 #root 顶部（y=0）。
+   * 此处不再 offset 36px——之前错误的 body padding-top 把整个 SPA 下推了 36px,
+   * 导致用户看到「title bar 之前有空白」。 */
+  html[data-electron='true'] body {
+    margin: 0;
+  }
+  /* 在 Electron 模式,各 stage 都需让出顶部 36px。min-height 仍然是 100vh 让 stage 占满,
+     但 chrome 顶部 36px 让 stage 内容不会被遮挡。 */
+  html[data-electron='true'] .min-h-screen {
+    min-height: 100vh !important;
+  }
+
+  :root {
+    /* 主主题（梦幻紫粉调）—— Tab 1-4 用（Module 09 美观化） */
+    --ht-background: #f6f3fb;            /* 薰衣草白,代替之前米色 #eeede8 */
+    --ht-foreground: #4a4458;            /* 深紫灰,代替之前纯黑 #1a1a1a */
+    --ht-card: #ffffff;                  /* 卡片白 */
+    --ht-primary: #a18cd1;               /* 主淡紫,代替之前薄荷绿 #7fa69b */
+    --ht-muted: #9b94a8;                 /* 淡紫灰 */
+    --ht-border: #ece8f5;                /* 淡紫边框 */
+
+    /* 渐变集（梦幻主题） */
+    --ht-gradient-main: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+    --ht-gradient-soft: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+    --ht-gradient-leaf: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+    --ht-gradient-rose: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    --ht-gradient-sun: linear-gradient(135deg, #fddb92 0%, #ffab91 100%);
+    --ht-gradient-ocean: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+
+    /* 强调色（用于细节点缀） */
+    --ht-accent-purple: #a18cd1;
+    --ht-accent-pink: #ff9a9e;
+    --ht-accent-blue: #66a6ff;
+    --ht-accent-yellow: #fddb92;
+    --ht-accent-green: #84fab0;
+
+    /* 阴影 */
+    --ht-shadow-soft: 0 4px 16px rgba(161, 140, 209, 0.12);   /* 卡片柔和投影 */
+    --ht-shadow-hover: 0 6px 22px rgba(161, 140, 209, 0.18);  /* hover 抬升 */
+    --ht-shadow-glow: 0 0 18px rgba(161, 140, 209, 0.45);     /* 激活项发光 */
+
+    /* 米色主题（启动层 BootScreen 用）—— 不动,保持独立 */
+    --beige-background: #F5F0E6;
+    --beige-foreground: #4A443A;
+    --beige-card: #FAF7F1;
+    --beige-card-foreground: #5A5348;
+    --beige-primary: #C8B89C;
+    --beige-primary-foreground: #3D362D;
+    --beige-muted: #EDE6D8;
+    --beige-muted-foreground: #7D7464;
+    --beige-border: #DDD5C5;
+    --beige-shadow-1: 0 1px 2px rgba(74, 68, 58, 0.05),
+                       0 1px 1px rgba(74, 68, 58, 0.03);
+  }
+
+  html, body, #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--ht-background);
+    color: var(--ht-foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
+      sans-serif;
+
+    /* 可爱自定义滚动条（WebKit + Firefox） */
+    scrollbar-width: thin;
+    scrollbar-color: #fbc2eb rgba(161, 140, 209, 0.12);
+  }
+
+  /* WebKit 滚动条（Chrome / Electron / Edge） */
+  ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(161, 140, 209, 0.12);
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #fbc2eb, #a18cd1);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+    box-shadow:
+      inset 2px 2px 4px rgba(255, 255, 255, 0.6),
+      inset -2px -2px 4px rgba(0, 0, 0, 0.05);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ffd1dc, #b49ad6);
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* 启动层字体：华文新魏（标题用） */
+.font-stxinwei {
+  font-family: "STXinwei", "华文新魏", "KaiTi", "STKaiti", serif;
+}
+
+/* Tab 1 顶部标语字体：华文行楷 */
+.font-stxingkai {
+  font-family: "STXingkai", "华文行楷", "KaiTi", "STKaiti", "楷体", serif;
+}
+
+/* 启动层阴影 1（弱阴影） */
+.shadow-beige-1 {
+  box-shadow: var(--beige-shadow-1);
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* 隐藏浏览器 native 密码可见性按钮（IE/Edge 右眼、Chrome 密码生成器等） */
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none;
+  }
+  input::-webkit-credentials-auto-fill-button,
+  input::-webkit-strong-password-auto-fill-button {
+    display: none !important;
+    visibility: hidden;
+  }
+
+  /* ============ Module 09 美观化 utility classes ============ */
+
+  /* 渐变文字（数字/标题用） */
+  .gradient-text {
+    background: var(--ht-gradient-main);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* 渐变主按钮（pill 形状） */
+  .btn-gradient {
+    background: var(--ht-gradient-main);
+    color: #ffffff;
+    border-radius: 999px;
+    box-shadow: 0 4px 14px rgba(161, 140, 209, 0.35);
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.18s ease;
+  }
+  .btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(161, 140, 209, 0.45);
+  }
+  .btn-gradient:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  /* 柔和阴影（卡片用） */
+  .shadow-soft {
+    box-shadow: var(--ht-shadow-soft);
+  }
+  .shadow-soft-hover {
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .shadow-soft-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--ht-shadow-hover);
+  }
+
+  /* 圆形渐变按钮（stepper + / - 用） */
+  .btn-circle-gradient {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: #ffffff;
+    display: grid;
+    place-items: center;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .btn-circle-gradient:hover {
+    transform: scale(1.12);
+  }
+  .btn-circle-gradient:active {
+    transform: scale(0.95);
+  }
+  .btn-circle-minus {
+    background: var(--ht-gradient-rose);
+  }
+  .btn-circle-plus {
+    background: var(--ht-gradient-ocean);
+  }
+
+  /* 输入框聚焦态 */
+  .input-soft {
+    background: #faf9fd;
+    border: 2px solid transparent;
+    border-radius: 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .input-soft:focus {
+    border-color: rgba(161, 140, 209, 0.5);
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(161, 140, 209, 0.12);
+    outline: none;
+  }
+  .input-soft::placeholder {
+    color: #c8c4d4;
+  }
+
+  /* 圆角色块（颜色选择器 / 习惯头像） */
+  .chip-gradient {
+    border-radius: 14px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .chip-gradient:hover {
+    transform: scale(1.08);
+  }
+  .chip-gradient--active {
+    box-shadow: 0 0 0 3px var(--ht-accent-purple), 0 6px 14px rgba(0, 0, 0, 0.15);
+  }
+
+  /* 椭圆形胶囊（horizontal scroll chips） */
+  .pill-soft {
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: #faf9fd;
+    color: var(--ht-foreground);
+    font-weight: 600;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .pill-soft:hover {
+    transform: translateY(-2px);
+  }
+  .pill-soft--active {
+    color: #ffffff;
+    background: var(--ht-gradient-main);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 12px rgba(161, 140, 209, 0.35);
+  }
+}
+
+@layer components {
+  .app-shell {
+    max-width: 375px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding-top: 0;
+  }
+  /* Module 09 (2026-09-26): Electron 模式让 stage 顶部贴合 title bar,只保留 4px 微间距 */
+  html[data-electron='true'] .app-shell {
+    padding-top: 4px;
+  }
+
+  .page-header {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+  }
+
+  .header-greeting,
+  .header-date {
+    font-size: 18px;
+    line-height: 1.4;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .habit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 16px;
+  }
+
+  /* ============ Tab 2 表单顶部栏 ============ */
+  .form-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 16px;
+    background: var(--ht-card);
+    border-bottom: 1px solid var(--ht-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .form-top-bar__title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+  }
+
+  .form-top-bar__btn {
+    font-size: 15px;
+    font-weight: 500;
+    background: none;
+    border: none;
+    padding: 8px 4px;
+    cursor: pointer;
+    min-width: 60px;
+    transition: opacity 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .form-top-bar__btn:hover {
+    opacity: 0.6;
+  }
+
+  .form-top-bar__btn--exit {
+    color: var(--ht-muted);
+    text-align: left;
+  }
+
+  .form-top-bar__btn--save {
+    color: var(--ht-primary);
+    text-align: right;
+  }
+
+  .form-body {
+    padding: 0 0 24px;
+  }
+
+  /* ============ 全局底部 Tab Bar（毛玻璃 + 渐变高光 + 激活圆点） ============ */
+  .bottom-tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 375px;
+    height: 68px;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    z-index: 40;
+    box-shadow: 0 -4px 20px rgba(161, 140, 209, 0.18);
+    padding-bottom: env(safe-area-inset-bottom);
+    overflow: hidden;
+  }
+
+  /* 顶部再加一道柔和渐变高光 */
+  .bottom-tab-bar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+    pointer-events: none;
+  }
+
+  .bottom-tab-bar__btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    -webkit-tap-highlight-color: transparent;
+    padding: 6px 0;
+    position: relative;
+  }
+
+  .bottom-tab-bar__btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .bottom-tab-bar__btn--active {
+    color: var(--ht-primary);
+  }
+
+  .bottom-tab-bar__btn--active .bottom-tab-bar__label {
+    font-weight: 600;
+  }
+
+  /* 激活项下方的小圆点指示器 */
+  .bottom-tab-bar__btn--active::after {
+    content: "";
+    position: absolute;
+    bottom: 8px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ht-primary);
+    box-shadow: 0 2px 6px rgba(161, 140, 209, 0.55);
+  }
+
+  .bottom-tab-bar__btn--inactive {
+    color: var(--ht-muted);
+  }
+
+  .bottom-tab-bar__label {
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 500;
+  }
+}

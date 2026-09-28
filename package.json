@@ -1,0 +1,98 @@
+{
+  "name": "habit-platform",
+  "private": true,
+  "version": "0.0.0",
+  "description": "星启 · 习惯打卡 + 排行榜 + 好友",
+  "author": {
+    "name": "habit-platform team",
+    "email": "dev@habit-platform.local"
+  },
+  "main": "electron/main.cjs",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc -b",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "electron:dev": "concurrently -k -n vite,electron -c blue,green \"npm:dev\" \"cross-env NODE_ENV=development electron .\"",
+    "electron:build": "npm run build && cross-env ELECTRON_BUILDER_7ZA_WRAPPER=true ELECTRON_BUILDER_BINARIES_MIRROR=https://registry.npmmirror.com/-/binary/electron-builder-binaries/ electron-builder --win --x64",
+    "electron:build:nsis": "npm run build && cross-env ELECTRON_BUILDER_7ZA_WRAPPER=true ELECTRON_BUILDER_BINARIES_MIRROR=https://registry.npmmirror.com/-/binary/electron-builder-binaries/ electron-builder --win nsis --x64",
+    "electron:build:portable": "npm run build && cross-env ELECTRON_BUILDER_7ZA_WRAPPER=true ELECTRON_BUILDER_BINARIES_MIRROR=https://registry.npmmirror.com/-/binary/electron-builder-binaries/ electron-builder --win portable --x64",
+    "electron:pack": "node scripts/pack-electron.cjs",
+    "patch-electron-builder": "node scripts/patch-electron-builder.cjs",
+    "postinstall": "node scripts/patch-electron-builder.cjs"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.23",
+    "framer-motion": "^13.4.0",
+    "lottie-react": "^3.1.2",
+    "lucide-react": "^1.47.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "autoprefixer": "^10.6.1",
+    "concurrently": "^9.2.4",
+    "cross-env": "^7.0.3",
+    "electron": "^32.3.3",
+    "electron-builder": "^25.1.8",
+    "eslint": "^10.10.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.6",
+    "globals": "^17.12.0",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^3.4.19",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.69.0",
+    "vite": "^8.3.0",
+    "wait-on": "^8.0.5"
+  },
+  "build": {
+    "appId": "com.habitplatform.desktop",
+    "productName": "星启",
+    "directories": {
+      "output": "release/nsis3"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "public/icon-assets/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "icon": "electron/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "星启",
+      "installerIcon": "electron/icon.ico",
+      "uninstallerIcon": "electron/icon.ico"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.${ext}"
+    }
+  }
+}

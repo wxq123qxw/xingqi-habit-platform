@@ -1,0 +1,53 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+
+# Build artifacts
+dist
+dist-ssr
+dist-clean
+release
+.cache
+
+# Temporary / working files
+tmp-icon
+.tmp-*
+*.tmp
+scripts/.tmp-*
+
+# Backend runtime data + encrypted backups (PRIVATE!)
+backend/data
+backend/data/*
+*.hbf
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local env files
+.env
+.env.local
+*.local
+
+# OS files
+Thumbs.db
+desktop.ini
+
+# Node test/coverage
+coverage
+.nyc_output
